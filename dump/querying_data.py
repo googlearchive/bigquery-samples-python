@@ -29,7 +29,7 @@ def runSyncQuery(service, projectId, datasetId, timeout=0):
       currentRow = len(queryReply['rows'])
 
       # Loop through each page of data
-      while('rows' in queryReply and currentRow &lt; queryReply['totalRows']):
+      while('rows' in queryReply and currentRow < queryReply['totalRows']):
         queryReply = jobCollection.getQueryResults(
                           projectId=jobReference['projectId'],
                           jobId=jobReference['jobId'],
@@ -46,7 +46,7 @@ def runSyncQuery(service, projectId, datasetId, timeout=0):
     print 'Error in runSyncQuery:', pprint.pprint(err.content)
 
   except Exception as err:
-    print 'Undefined error' % err</pre>
+    print 'Undefined error' % err
 # [END synchronous_call]
 
 # [START asynchronous_call]
@@ -72,7 +72,7 @@ def runAsyncQuery(service, projectId):
                       jobId=insertResponse['jobReference']['jobId'],
                       startIndex=currentRow).execute()
 
-    while(('rows' in queryReply) and currentRow &lt; queryReply['totalRows']):
+    while(('rows' in queryReply) and currentRow < queryReply['totalRows']):
       printTableData(queryReply, currentRow)
       currentRow += len(queryReply['rows'])
       queryReply = jobCollection.getQueryResults(
@@ -116,7 +116,7 @@ def runBatchedCall():
                        jobId=insertResponse['jobReference']['jobId'],
                        startIndex=currentRow).execute()
 
-        while(('rows' in queryReply) and currentRow &lt; queryReply['totalRows']):
+        while(('rows' in queryReply) and currentRow < queryReply['totalRows']):
           printTableData(queryReply, currentRow)
           currentRow += len(queryReply['rows'])
           queryReply = jobCollection.getQueryResults(
@@ -133,5 +133,5 @@ def runBatchedCall():
     print 'Error in runAsyncTempTable:', pprint.pprint(err.resp)
 
   except Exception as err:
-    print 'Undefined error: %s' % err</pre>
+    print 'Undefined error: %s' % err
 # [END batched_call]
