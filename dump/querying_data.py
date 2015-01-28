@@ -16,7 +16,7 @@ def printTableData():
 
 def runSyncQuery(service, projectId, datasetId, timeout=0):
     try:
-        print 'timeout:%d' % timeout
+        print('timeout:%d' % timeout)
         jobCollection = service.jobs()
         queryData = {'query': 'SELECT word,count(word) AS count'
                               'FROM publicdata:samples.shakespeare'
@@ -30,7 +30,7 @@ def runSyncQuery(service, projectId, datasetId, timeout=0):
 
         # Timeout exceeded: keep polling until the job is complete.
         while not queryReply['jobComplete']:
-            print 'Job not yet complete...'
+            print('Job not yet complete...')
             queryReply = jobCollection.getQueryResults(
                 projectId=jobReference['projectId'],
                 jobId=jobReference['jobId'],
@@ -38,7 +38,7 @@ def runSyncQuery(service, projectId, datasetId, timeout=0):
 
         # If the result has rows, print the rows in the reply.
         if 'rows' in queryReply:
-            print 'has a rows attribute'
+            print('has a rows attribute')
             printTableData(queryReply, 0)
             currentRow = len(queryReply['rows'])
 
@@ -54,14 +54,14 @@ def runSyncQuery(service, projectId, datasetId, timeout=0):
                     currentRow += len(queryReply['rows'])
 
     except AccessTokenRefreshError:
-        print ('The credentials have been revoked or expired, please re-run'
-               'the application to re-authorize')
+        print('The credentials have been revoked or expired, please re-run'
+              'the application to re-authorize')
 
     except HttpError as err:
-        print 'Error in runSyncQuery:', pprint.pprint(err.content)
+        print('Error in runSyncQuery:', pprint.pprint(err.content))
 
     except Exception as err:
-        print 'Undefined error' % err
+        print('Undefined error' % err)
 # [END synchronous_call]
 
 
@@ -98,10 +98,10 @@ def runAsyncQuery(service, projectId):
                 startIndex=currentRow).execute()
 
     except HttpError as err:
-        print 'Error in runAsyncTempTable:', pprint.pprint(err.resp)
+        print('Error in runAsyncTempTable:', pprint.pprint(err.resp))
 
     except Exception as err:
-        print 'Undefined error' % err
+        print('Undefined error' % err)
 # [END asynchronous_call]
 
 
@@ -145,14 +145,14 @@ def runBatchedCall(service, projectId):
                         jobId=queryReply['jobReference']['jobId'],
                         startIndex=currentRow).execute()
             else:
-                print 'Waiting for the query to complete...'
-                print 'Current status: ' + currentStatus
-                print time.ctime()
+                print('Waiting for the query to complete...')
+                print('Current status: ' + currentStatus)
+                print(time.ctime())
                 time.sleep(10)
 
     except HttpError as err:
-        print 'Error in runAsyncTempTable:', pprint.pprint(err.resp)
+        print('Error in runAsyncTempTable:', pprint.pprint(err.resp))
 
     except Exception as err:
-        print 'Undefined error: %s' % err
+        print('Undefined error: %s' % err)
 # [END batched_call]
