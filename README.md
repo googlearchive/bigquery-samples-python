@@ -1,51 +1,19 @@
-## Project name
+## bigquery-docs-python
 
-A description of what this project does and who it serves.
+A repository for testing the Python code snippets included from [cloud.google.com/bigquery](https://cloud.google.com/bigquery/).
 
-Include authorship, support contact and release information.
-
-
-## Project setup, installation, and configuration
-
-How do I, as a developer, start working on the project?
-
-1. What dependencies does it have (where are they expressed) and how do I install them?
-1. Can I see the project working before I change anything?
-
+[![Build Status](https://travis-ci.org/GoogleCloudPlatform/bigquery-getting-started-python.svg)](https://travis-ci.org/GoogleCloudPlatform/bigquery-getting-started-python)
 
 ## Testing
 
-How do I run the project's automated tests?
-
-* Unit Tests
-
-* Integration Tests
-
-
-## Deploying
-
-### How to setup the deployment environment
-
-* Addons, packages, or other dependencies required for deployment.
-* Required environment variables or credentials not included in git.
-* Monitoring services and logging.
-
-### How to deploy
-
-
-## Troubleshooting & useful tools
-
-### Examples of common tasks
-
-e.g.
-* How to make curl requests while authenticated via oauth.
-* How to monitor background jobs.
-* How to run the app through a proxy.
-
+```
+pip install tox
+tox
+```
 
 ## Contributing changes
 
-* See [CONTRIB.md](CONTRIB.md)
+* See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 
 ## Licensing
