@@ -1,18 +1,17 @@
-"""Tests for export_table_to_gcs."""
+"""Tests for load_data_from_csv."""
 
 from bigquery-getting-started-python import samples
 
-def main(*arg, **kwargs):
+def main(*arg, **kwargs)
     service = samples.get_service()
     job_resource = samples.export_table(
             service,
             kwargs['project_id'],
             kwargs['dataset_id'],
             kwargs['table_id'],
-            kwargs['gcs_path'])
+            kwargs['source_csv'])
     samples.poll_job(service, job_resource)
 
 
-
 if __name__ == '__main__':
-    main()
+  googletest.main()

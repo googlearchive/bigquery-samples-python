@@ -1,6 +1,6 @@
 import time
 
-def poll_job(service, job_resource, timeout, max_timeout):
+def poll_job(service, job_resource, timeout=2, max_timeout=33):
     job_collection = service.jobs()
    #[ START poll_job]
     job_status = job_resource['status']['state']
