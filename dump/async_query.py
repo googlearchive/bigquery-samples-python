@@ -32,9 +32,10 @@ def job_status(job_id, service):
   return service.jobs().get(
       projectId=PROJECT_ID, jobId=job_id).execute()
 
-def get_query_results(job_id, service):
+def get_query_results(job_id, service, start_row):
   return service.jobs().getQueryResults(
-      projectId=PROJECT_ID, jobId=job_id).execute()
+      projectId=PROJECT_ID, jobId=job_id,
+      startIndex=start_row).execute()
 
 def main(argv):
 
@@ -55,8 +56,9 @@ def main(argv):
     status = job_status(job_id, client)
     print "job status is: %s" % status['status']['state']
 
-  # Then get the query results
-  res = get_query_results(job_id, client)
+  # Then get the query results.  Start from row 0.  With a larger result set,
+  # you can page through.
+  res = get_query_results(job_id, client, 0)
   print "query response rows: %s" % res['rows']
 
 
