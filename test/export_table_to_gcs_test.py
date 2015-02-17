@@ -1,6 +1,6 @@
 """Tests for export_table_to_gcs."""
 
-from bigquery-getting-started-python import samples
+import samples
 
 def main(*arg, **kwargs):
     service = samples.get_service()

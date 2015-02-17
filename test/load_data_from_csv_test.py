@@ -1,6 +1,6 @@
 """Tests for load_data_from_csv."""
 
-from bigquery-getting-started-python import samples
+import samples
 
 def main(*arg, **kwargs)
     service = samples.get_service()
