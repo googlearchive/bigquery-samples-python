@@ -3,7 +3,7 @@
 from oauth2client.client import GoogleCredentials
 from googleapiclient.discovery
 
-def auth():
+def get_service():
     credentials = GoogleCredentials.get_application_default()
     return build('bigquery', 'v2', credentials)
 

@@ -3,7 +3,7 @@ from bigquery-getting-started-python import lib
 
 def main():
 
-    service = lib.auth()
+    service = lib.get_service()
 
 if __name__ == '__main__':
   main()
