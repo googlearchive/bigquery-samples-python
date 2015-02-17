@@ -156,3 +156,53 @@ def runBatchedCall(service, projectId):
     except Exception as err:
         print('Undefined error: %s' % err)
 # [END batched_call]
+
+
+# [START batched_async_call]
+def runAsyncQueryBatch(service, projectId):
+  try:
+    jobCollection = service.jobs()
+    queryString = 'SELECT corpus FROM publicdata:samples.shakespeare GROUP BY corpus;'
+    jobData = {
+      'configuration': {
+        'query': {
+          'query': queryString,
+          'priority': 'BATCH' # Set priority to BATCH
+        }
+      }
+    }
+
+    insertResponse = jobCollection.insert(projectId=projectId,
+                                         body=jobData).execute()
+
+    import time
+    while True:
+      status = jobCollection.get(projectId=projectId, jobId=insertResponse['jobReference']['jobId']).execute()
+      currentStatus = status['status']['state']
+
+      if 'DONE' == currentStatus:
+        currentRow = 0
+        queryReply = jobCollection.getQueryResults(
+                       projectId=projectId,
+                       jobId=insertResponse['jobReference']['jobId'],
+                       startIndex=currentRow).execute()
+
+        while(('rows' in queryReply) and currentRow &lt; queryReply['totalRows']):
+          printTableData(queryReply, currentRow)
+          currentRow += len(queryReply['rows'])
+          queryReply = jobCollection.getQueryResults(
+                         projectId=projectId,
+                         jobId=queryReply['jobReference']['jobId'],
+                         startIndex=currentRow).execute()
+      else:
+        print 'Waiting for the query to complete...'
+        print 'Current status: ' + currentStatus
+        print time.ctime()
+        time.sleep(10)
+
+  except HttpError as err:
+    print 'Error in runAsyncTempTable:', pprint.pprint(err.resp)
+
+  except Exception as err:
+    print 'Undefined error: %s' % err
+# [END batched_async_call]
