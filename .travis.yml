@@ -24,7 +24,6 @@ before_install:
         #Authenticate with gcloud
         - printf -- "$CREDENTIALS_JSON" > $HOME/credentials.json
         - export GOOGLE_APPLICATION_CREDENTIALS=$HOME/credentials.json
-        - $GCLOUD/gcloud auth login
 
 install:
         - pip install tox --download-cache $HOME/.pip-cache
