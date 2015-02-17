@@ -22,14 +22,11 @@ before_install:
           fi
 
         #Authenticate with gcloud
-        - $GCLOUD/gcloud config set project $PROJECT_ID
-        - echo "$CREDENTIALS_JSON" > credentials.json
-        - $GCLOUD/gcloud auth activate-service-account $ACCOUNT --key-file credentials.json
+        - $GCLOUD/gcloud auth login
 
 install:
         - pip install tox --download-cache $HOME/.pip-cache
         - pip install google-api-python-client --download-cache $HOME/.pip-cache
 
 script:
-        - tox
         - python test/auth_test.py
