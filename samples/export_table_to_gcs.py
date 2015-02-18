@@ -37,6 +37,6 @@ def main():
     bigquery = auth.get_service()
     resource = export_table(bigquery, project_id, dataset_id, table_id,
                             gcs_path)
-    poll_job(bigquery, resource)
+    poll_job.poll_job(bigquery, resource)
     print 'Done exporting!'
 # [END export_table_to_gcs]

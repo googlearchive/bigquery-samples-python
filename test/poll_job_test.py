@@ -1,15 +1,19 @@
-import samples
+import unittest
+from samples import auth
+from samples import export_table_to_gcs
+from samples import poll_job
 
-def main(*arg, **kwargs):
-    service = samples.get_service()
-    job_resource = samples.export_table(
-            service,
-            kwargs['project_id'],
-            kwargs['dataset_id'],
-            kwargs['table_id'],
-            kwargs['gcs_path']
 
-    samples.poll_job(service, job_resource, 1, 17)
+class TestPollJob(unittest.TestCase):
+
+    def setUp(self):
+        self.service = auth.get_service()
+
+    def test_poll_job(self):
+        resource = export_table_to_gcs.export_table(
+            self.service, 'foo', 'bar', 'baz', 'qux')
+        samples.poll_job(service, resource, 1, 17)
+
 
 if __name__ == '__main__':
-    main()
+    unittest.main()

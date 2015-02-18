@@ -1,17 +1,19 @@
 """Tests for load_data_from_csv."""
+import unittest
+from samples import auth
+from samples import load_data_from_csv
 
-import samples
 
-def main(*arg, **kwargs)
-    service = samples.get_service()
-    job_resource = samples.export_table(
-            service,
-            kwargs['project_id'],
-            kwargs['dataset_id'],
-            kwargs['table_id'],
-            kwargs['source_csv'])
-    samples.poll_job(service, job_resource)
+class TestLoadDataFromCSV(unittest.TestCase):
+
+    def setUp(self):
+        self.service = auth.get_service()
+
+    def test_load_table(self):
+        resource = load_data_from_csv.load_table(
+            self.service, 'foo', 'bar', 'baz', 'qux')
+        self.assertIsNotNone(resource)
 
 
 if __name__ == '__main__':
-  googletest.main()
+    unittest.main()
