@@ -27,7 +27,6 @@ before_install:
 
 install:
         - pip install tox --download-cache $HOME/.pip-cache
-        - pip install google-api-python-client --download-cache $HOME/.pip-cache
 
 script:
-        - python test/auth_test.py
+        - tox
