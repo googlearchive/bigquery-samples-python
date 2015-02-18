@@ -12,7 +12,7 @@ class TestPollJob(unittest.TestCase):
     def test_poll_job(self):
         resource = export_table_to_gcs.export_table(
             self.service, 'foo', 'bar', 'baz', 'qux')
-        samples.poll_job(service, resource, 1, 17)
+        poll_job.poll_job(self.service, resource, 1, 17)
 
 
 if __name__ == '__main__':
