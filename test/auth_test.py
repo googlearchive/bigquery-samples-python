@@ -1,9 +1,9 @@
 """Tests for auth."""
-import samples
+from samples import auth
 
 def main():
 
-    service = samples.get_service()
+    service = auth.get_service()
 
 if __name__ == '__main__':
   main()
