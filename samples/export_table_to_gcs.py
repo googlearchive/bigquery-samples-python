@@ -27,6 +27,7 @@ def export_table(service, project_id, dataset_id, table_id, gcs_path):
         body=job_data).execute()
     return job_resource
 
+
 def main():
     project_id = raw_input("Choose your project ID: ")
     dataset_id = raw_input("Choose a dataset ID: ")
@@ -34,7 +35,8 @@ def main():
     gcs_path = raw_input("Enter a GCS URI: ")
 
     bigquery = auth.get_service()
-    resource = export_table(bigquery, project_id, dataset_id, table_id, gcs_path)
-    poll_job(bigquery, job_resource)
+    resource = export_table(bigquery, project_id, dataset_id, table_id,
+                            gcs_path)
+    poll_job(bigquery, resource)
     print 'Done exporting!'
 # [END export_table_to_gcs]
