@@ -13,7 +13,7 @@ def poll_job(service, job_resource, timeout=2, max_timeout=33):
         job_resource = job_collection.get(
             projectId=project_id,
             jobId=job_id).execute()
-        print 'Waiting ' + timeout + ' seconds for export to complete..'
+        print 'Waiting %d seconds for export to complete...' % timeout
         time.sleep(timeout)
         timeout = timeout * 2
     # [END poll_job]

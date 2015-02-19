@@ -1,5 +1,6 @@
 """Tests for auth."""
 import unittest
+
 from samples import auth
 
 
