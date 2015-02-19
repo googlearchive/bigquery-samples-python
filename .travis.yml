@@ -22,8 +22,7 @@ before_install:
           fi
 
         #Authenticate with gcloud
-        - printf -- "$CREDENTIALS_JSON" > $HOME/credentials.json
-        - export GOOGLE_APPLICATION_CREDENTIALS=$HOME/credentials.json
+        - printf -- "$CREDENTIALS_JSON" > $HOME/bigquery_samples.key.json
 
 install:
         - pip install tox --download-cache $HOME/.pip-cache
