@@ -21,8 +21,8 @@ before_install:
                 cd $TRAVIS_BUILD_DIR;
           fi
 
-        #Authenticate with gcloud
-        - printf -- "$CREDENTIALS_JSON" > $TRAVIS_BUILD_DIR/bigquery_samples.key.json
+        # Auth
+        - openssl aes-256-cbc -K $encrypted_51ede52ea9aa_key -iv $encrypted_51ede52ea9aa_iv -in bigquery_samples.key.json.enc -out bigquery_samples.key.json -d
 
 install:
         - pip install tox --download-cache $HOME/.pip-cache
