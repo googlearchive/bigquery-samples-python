@@ -6,10 +6,8 @@ from samples import poll_job
 def export_table(service, project_id, dataset_id, table_id, gcs_path):
     """starts a job which exports data from the specified table,
     to the specified Google Cloud Storage file, returns a job resource"""
-    job_collection = service.jobs()
-    # [START job_data]
+    # [START extract_job_data]
     job_data = {
-        'projectId': project_id,
         'configuration': {
             'extract': {
                 'sourceTable': {
@@ -21,11 +19,10 @@ def export_table(service, project_id, dataset_id, table_id, gcs_path):
             }
         }
     }
-    # [END job_data]
-    job_resource = job_collection.insert(
+    # [END extract_job_data]
+    return service.jobs().insert(
         projectId=project_id,
         body=job_data).execute()
-    return job_resource
 
 
 def main():
