@@ -29,7 +29,7 @@ def main():
     project_id = raw_input("Choose your project ID: ")
     dataset_id = raw_input("Choose a dataset ID: ")
     table_id = raw_input("Choose a table name to copy: ")
-    gcs_path = raw_input("Enter a GCS URI: ")
+    gcs_path = raw_input("Enter a Google Cloud Storage URI: ")
 
     bigquery = auth.get_service()
     resource = export_table(bigquery, project_id, dataset_id, table_id,
