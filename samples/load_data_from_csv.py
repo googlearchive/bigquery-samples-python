@@ -35,8 +35,7 @@ def load_table(service, project_id, dataset_id, table_id, source_csv):
         }
     }
 
-    job_resource = job_collection.insert(
+    return job_collection.insert(
         projectId=project_id,
         body=job_data).execute()
 # [END load_table_from_csv]
-    return job_resource
