@@ -11,7 +11,6 @@ class TestSyncQuery(unittest.TestCase):
 
     def setUp(self):
         self.service = auth.get_service()
-        self.results = []
 
     def test_sync_query(self):
         resource = sync_query.sync_query(
@@ -21,14 +20,10 @@ class TestSyncQuery(unittest.TestCase):
     def test_get_results(self):
         resource = sync_query.sync_query(
                 self.service, constants.PROJECT_ID, constants.QUERY)
-        query.query_paging(
+        for page in query.query_paging(
                 self.service,
-                query.query_polling(self.service, resource),
-                lambda x: self.results.extend(x))
-        self.assertNotEqual(self.results, [])
-
-    def tearDown(self):
-        self.results = None
+                query.query_polling(self.service, resource)):
+            self.assertIsNotNone(page)
 
 if __name__ == '__main__':
     unittest.main()

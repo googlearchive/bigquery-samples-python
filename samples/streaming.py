@@ -5,29 +5,19 @@ from samples import auth
 import ast
 
 
-def stream_to_bigquery(service,
-                       project_id,
-                       dataset_id,
-                       table_id,
-                       row_generator):
-    for row in row_generator:
-        insert_all_data = {
-                "rows": [{"json": row}]
-                }
-        yield service.tabledata().insertAll(
-                        projectId=project_id,
-                        datasetId=dataset_id,
-                        tableId=table_id,
-                        body=insert_all_data).execute()
-
-
-def get_input():
-    line = raw_input("Stream a line into your bigquery table:")
-    while line:
-        yield ast.literal_eval(line)
-        line = raw_input(
-                "Stream another line into your bigquery table \n" +
-                "[hit enter to quit]:")
+def stream_row_to_bigquery(service,
+                           project_id,
+                           dataset_id,
+                           table_id,
+                           row):
+    insert_all_data = {
+            "rows": [{"json": row}]
+            }
+    return service.tabledata().insertAll(
+                    projectId=project_id,
+                    datasetId=dataset_id,
+                    tableId=table_id,
+                    body=insert_all_data).execute()
 
 
 def main():
@@ -36,11 +26,14 @@ def main():
     dataset_id = raw_input("Choose a dataset ID: ")
     table_id = raw_input("Choose a table ID : ")
 
-    for response in stream_to_bigquery(
-            service,
-            project_id,
-            dataset_id,
-            table_id,
-            get_input()):
-        print(response)
+    line = raw_input("Stream a line into your bigquery table:")
+    while line:
+        print(stream_row_to_bigquery(service,
+                                     project_id,
+                                     dataset_id,
+                                     table_id,
+                                     ast.literal_eval(line)))
+        line = raw_input(
+                "Stream another line into your bigquery table \n" +
+                "[hit enter to quit]:")
 # [END streaming_call]

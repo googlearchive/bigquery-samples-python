@@ -51,8 +51,7 @@ def main():
             projectId=project_id,
             jobId=query_job['jobReference']['jobId']).execute()
 
-    query.query_paging(
-            service,
-            query.polling(service, query_response),
-            lambda x: print(x))
+    for page in query.query_paging(
+            service, query.polling(service, query_response)):
+        print(page)
 # [ END async_query ]

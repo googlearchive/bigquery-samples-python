@@ -26,11 +26,7 @@ def main():
     project_id = raw_input("Choose your project ID: ")
     query_string = raw_input("Enter your Bigquery SQL Query: ")
 
-    query.query_paging(
-            service,
-            query.query_polling(
-                    service,
-                    sync_query(service, project_id, query_string)),
-            lambda x: print(x))
-
+    for page in query.query_paging(service, query.query_polling(
+            service, sync_query(service, project_id, query_string))):
+        print(page)
 # [END sync_query]

@@ -1,6 +1,3 @@
-from __future__ import print_function  # python 2/3 interoperability
-
-
 # [START query_polling]
 def query_polling(service, query_response, timeout=1, max_timeout=33):
 
@@ -17,9 +14,9 @@ def query_polling(service, query_response, timeout=1, max_timeout=33):
 
 
 # [START query_paging]
-def query_paging(service, query_response, output_data):
+def query_paging(service, query_response):
     while 'rows' in query_response:
-        output_data(query_response['rows'])
+        yield query_response['rows']
         if 'pageToken' in query_response:
             page_token = query_response['pageToken']
             query_response = service.jobs().getQueryResults(
@@ -27,5 +24,5 @@ def query_paging(service, query_response, output_data):
                 jobId=query_response['jobReference']['jobId'],
                 pageToken=page_token).execute()
         else:
-            query_response = {}
+            return
 # [END query_paging]
