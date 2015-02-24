@@ -1,10 +1,10 @@
 from __future__ import print_function
 
-# [START streaming_call]
-from samples import auth
+from samples.utils import get_service
 import ast
 
 
+# [START stream_row_to_bigquery]
 def stream_row_to_bigquery(service,
                            project_id,
                            dataset_id,
@@ -18,10 +18,12 @@ def stream_row_to_bigquery(service,
                     datasetId=dataset_id,
                     tableId=table_id,
                     body=insert_all_data).execute()
+# [END stream_row_to_bigquery]
 
 
+# [START main]
 def main():
-    service = auth.get_service()
+    service = get_service()
     project_id = raw_input("Choose your project ID: ")
     dataset_id = raw_input("Choose a dataset ID: ")
     table_id = raw_input("Choose a table ID : ")
@@ -36,4 +38,4 @@ def main():
         line = raw_input(
                 "Stream another line into your bigquery table \n" +
                 "[hit enter to quit]:")
-# [END streaming_call]
+# [END main]

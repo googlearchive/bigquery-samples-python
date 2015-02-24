@@ -1,57 +1,34 @@
 from __future__ import print_function  # For python 2/3 interoperability
-# [ START async_query ]
-from samples import auth
-from samples import query
+from samples.utils import get_service, query_paging, poll_query
 
 
-def async_batch_query(service, project_id, query):
-    # [START query_job_data]
+# [START async_query]
+def async_query(service, project_id, query, batch=False):
     job_data = {
         'configuration': {
             'query': {
                     'query': query,
-                    'priority': 'BATCH',
+                    'priority': 'BATCH' if batch else 'INTERACTIVE',
                 },
             }
         }
-    # [END query_job_data]
     return service.jobs().insert(
             projectId=project_id,
             body=job_data).execute()
+# [END async_query]
 
 
-def async_query(service, project_id, query):
-    # [START query_job_data]
-    job_data = {
-        'configuration': {
-            'query': {
-                    'query': query,
-                },
-            }
-        }
-    # [END query_job_data]
-    return service.jobs().insert(
-            projectId=project_id,
-            body=job_data).execute()
-
-
+# [START main]
 def main():
-    service = auth.get_service()
+    service = get_service()
     project_id = raw_input("Choose your project ID: ")
     query_string = raw_input("Enter your Bigquery SQL Query: ")
     batch = raw_input("Run query as batch?: ") in set(
             'True', 'true', 'y', 'Y', 'yes', 'Yes')
 
-    if batch:
-        query_job = async_batch_query(service, project_id, query_string)
-    else:
-        query_job = async_query(service, project_id, query_string)
+    query_job = async_query(service, project_id, query_string, batch)
 
-    query_response = service.jobs().getQueryResults(
-            projectId=project_id,
-            jobId=query_job['jobReference']['jobId']).execute()
-
-    for page in query.query_paging(
-            service, query.polling(service, query_response)):
+    for page in query_paging(
+            service, poll_query(service, **query_job['jobReference'])):
         print(page)
-# [ END async_query ]
+# [END main]

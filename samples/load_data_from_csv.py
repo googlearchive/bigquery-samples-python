@@ -1,41 +1,51 @@
-# [START load_table_from_csv]
-def load_table(service, project_id, dataset_id, table_id, source_csv):
-    job_collection = service.jobs()
+
+from samples.utils import get_service, poll_job
+import json
+
+
+# [START load_table]
+def load_table(service, source_schema, source_csv,
+               projectId, datasetId, tableId):
     job_data = {
-        'projectId': project_id,
+        'projectId': projectId,
         'configuration': {
             'load': {
                 'sourceUris': [source_csv],
                 'schema': {
-                    'fields': [
-                        {
-                            'name': 'Name',
-                            'type': 'STRING'
-                        },
-                        {
-                            'name': 'Age',
-                            'type': 'INTEGER'
-                        },
-                        {
-                            'name': 'Weight',
-                            'type': 'FLOAT'
-                        },
-                        {
-                            'name': 'IsMagic',
-                            'type': 'BOOLEAN'
-                        }
-                    ]
+                    'fields': source_schema
                 },
                 'destinationTable': {
-                    'projectId': project_id,
-                    'datasetId': dataset_id,
-                    'tableId': table_id
+                    'projectId': projectId,
+                    'datasetId': datasetId,
+                    'tableId': tableId
                 },
             }
         }
     }
 
-    return job_collection.insert(
-        projectId=project_id,
+    return service.jobs().insert(
+        projectId=projectId,
         body=job_data).execute()
-# [END load_table_from_csv]
+# [END load_table]
+
+
+# [START main]
+def main():
+    service = get_service()
+    projectId = raw_input("Choose your project ID: ")
+    datasetId = raw_input("Choose a dataset ID: ")
+    tableId = raw_input("Choose a destination table name: ")
+
+    schema_file_path = raw_input(
+            "Enter the path to your table schema: ")
+    with open(schema_file_path, 'r') as schema_file:
+        schema = json.load(schema_file)
+
+    data_file_path = raw_input(
+            "Enter the Cloud Storage path for your csv file: ")
+
+    job = load_table(service, schema, data_file_path,
+                     projectId, datasetId, tableId)
+
+    poll_job(service, **job['jobReference'])
+# [END main]
