@@ -1,9 +1,8 @@
 import time
+from socket import timeout as Timeout
 # [START get_service]
 from oauth2client.client import GoogleCredentials
 from googleapiclient.discovery import build
-
-from socket import timeout as Timeout
 
 
 def get_service():
