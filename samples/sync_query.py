@@ -1,5 +1,5 @@
 from __future__ import print_function  # For python 2/3 interoperability
-from samples.utils import get_service, query_paging, poll_query
+from samples.utils import get_service, query_paging
 
 
 # [START sync_query]
@@ -10,7 +10,7 @@ def sync_query(service, project_id, query, timeout=10000, num_retries=5):
                  }
     return service.jobs().query(
             projectId=project_id,
-            body=query_data).execute(num_retries=5)
+            body=query_data).execute(num_retries=num_retries)
 # [END sync_query]
 
 
@@ -26,6 +26,6 @@ def main():
                     service,
                     project_id,
                     query_string
-                    )['jobReference'])):
+                    )['jobReference']):
         print(page)
 # [END main]

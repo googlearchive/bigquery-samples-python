@@ -1,6 +1,7 @@
 from __future__ import print_function  # For python 2/3 interoperability
-from samples.utils import get_service, query_paging, poll_query
+from samples.utils import get_service, query_paging, poll_job
 import uuid
+
 
 # [START async_query]
 def async_query(service, project_id, query, batch=False, num_retries=5):
@@ -9,8 +10,8 @@ def async_query(service, project_id, query, batch=False, num_retries=5):
     job_data = {
             'jobReference': {
                     'projectId': project_id,
-                    'job_id': uuid.uuid4()
-                    }
+                    'job_id': str(uuid.uuid4())
+                    },
             'configuration': {
                     'query': {
                             'query': query,
@@ -20,7 +21,7 @@ def async_query(service, project_id, query, batch=False, num_retries=5):
             }
     return service.jobs().insert(
             projectId=project_id,
-            body=job_data).execute(num_retries)
+            body=job_data).execute(num_retries=num_retries)
     # [END async_query]
 
 

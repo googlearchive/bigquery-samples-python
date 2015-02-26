@@ -1,14 +1,17 @@
 from samples.utils import get_service, poll_job
 import uuid
 
+
 # [START export_table]
 def export_table(service, cloud_storage_path,
                  projectId, datasetId, tableId, num_retries=5):
+    # Generate a unique job_id so retries
+    # don't accidentally duplicate export
     job_data = {
             'jobReference': {
                     'projectId': projectId,
-                    'jobId': uuid.uuid4()
-                    }
+                    'jobId': str(uuid.uuid4())
+                    },
             'configuration': {
                     'extract': {
                             'sourceTable': {
@@ -22,7 +25,7 @@ def export_table(service, cloud_storage_path,
             }
     return service.jobs().insert(
         projectId=projectId,
-        body=job_data).execute(num_retries)
+        body=job_data).execute(num_retries=num_retries)
 # [END export_table]
 
 

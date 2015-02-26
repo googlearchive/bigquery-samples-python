@@ -1,8 +1,7 @@
 import json
 import httplib2
-from samples.utils import poll_job
+from samples.utils import get_service, poll_job
 from oauth2client.client import GoogleCredentials
-from googleapiclient.discovery import build
 
 
 # [START make_post]
@@ -71,7 +70,7 @@ def main():
 
     if resp.status == 200:
         job_resource = json.loads(content)
-        service = build('bigquery', 'v2', credentials=credentials)
+        service = get_service(credentials)
         poll_job(service, **job_resource['jobReference'])
         print("Success!")
     else:

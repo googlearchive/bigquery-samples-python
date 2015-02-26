@@ -1,5 +1,4 @@
 import time
-from socket import timeout as Timeout
 # [START get_service]
 from oauth2client.client import GoogleCredentials
 from googleapiclient.discovery import build
@@ -12,11 +11,13 @@ def get_service():
 
 
 # [START poll_job]
-def poll_job(service, projectId, jobId, timeout=1, max_timeout=33, num_retries=5):
+def poll_job(service, projectId, jobId,
+             timeout=1, max_timeout=33, num_retries=5):
+
     job_get = service.jobs().get(
             projectId=projectId,
             jobId=jobId)
-    job_resource = job_get.execute(num_retries)
+    job_resource = job_get.execute(num_retries=num_retries)
 
     while not job_resource['status']['state'] == 'DONE':
         if timeout > max_timeout:
@@ -30,10 +31,11 @@ def poll_job(service, projectId, jobId, timeout=1, max_timeout=33, num_retries=5
 
         time.sleep(timeout)
         timeout *= 2
-        job_resource = job_get.execute(num_retries)
+        job_resource = job_get.execute(num_retries=num_retries)
 
     return job_resource
 # [END poll_job]
+
 
 # [START query_paging]
 def query_paging(service, query_response, num_retries=5):
