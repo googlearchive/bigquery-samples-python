@@ -51,8 +51,7 @@ def get_service():
 
 
 # [START poll_job]
-def poll_job(service, projectId, jobId,
-             timeout=1, max_timeout=33, num_retries=5):
+def poll_job(service, projectId, jobId, interval=5, num_retries=5):
 
     job_get = service.jobs().get(
             projectId=projectId,
@@ -60,17 +59,9 @@ def poll_job(service, projectId, jobId,
     job_resource = job_get.execute(num_retries=num_retries)
 
     while not job_resource['status']['state'] == 'DONE':
-        if timeout > max_timeout:
-            raise StandardError(
-                    'Timed out waiting for job {} to complete, '
-                    'after {} seconds'
-                    .format(jobId, timeout-1))
-
         print('Job is {}, waiting {} seconds...'
-              .format(job_resource['status']['state'], timeout))
-
-        time.sleep(timeout)
-        timeout *= 2
+              .format(job_resource['status']['state'], interval))
+        time.sleep(interval)
         job_resource = job_get.execute(num_retries=num_retries)
 
     return job_resource
