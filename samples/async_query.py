@@ -1,21 +1,27 @@
 from __future__ import print_function  # For python 2/3 interoperability
 from samples.utils import get_service, query_paging, poll_query
-
+import uuid
 
 # [START async_query]
-def async_query(service, project_id, query, batch=False):
+def async_query(service, project_id, query, batch=False, num_retries=5):
+    # Generate a unique job_id so retries
+    # don't accidentally duplicate query
     job_data = {
-        'configuration': {
-            'query': {
-                    'query': query,
-                    'priority': 'BATCH' if batch else 'INTERACTIVE',
-                },
+            'jobReference': {
+                    'projectId': project_id,
+                    'job_id': uuid.uuid4()
+                    }
+            'configuration': {
+                    'query': {
+                            'query': query,
+                            'priority': 'BATCH' if batch else 'INTERACTIVE',
+                            },
+                    }
             }
-        }
     return service.jobs().insert(
             projectId=project_id,
-            body=job_data).execute()
-# [END async_query]
+            body=job_data).execute(num_retries)
+    # [END async_query]
 
 
 # [START main]
@@ -29,6 +35,7 @@ def main():
     query_job = async_query(service, project_id, query_string, batch)
 
     for page in query_paging(
-            service, poll_query(service, **query_job['jobReference'])):
+            service,
+            poll_job(service, **query_job['jobReference'])):
         print(page)
 # [END main]

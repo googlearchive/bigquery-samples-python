@@ -1,24 +1,28 @@
 from samples.utils import get_service, poll_job
-
+import uuid
 
 # [START export_table]
 def export_table(service, cloud_storage_path,
-                 projectId, datasetId, tableId):
+                 projectId, datasetId, tableId, num_retries=5):
     job_data = {
-        'configuration': {
-            'extract': {
-                'sourceTable': {
+            'jobReference': {
                     'projectId': projectId,
-                    'datasetId': datasetId,
-                    'tableId': tableId,
-                },
-                'destinationUris': [cloud_storage_path],
+                    'jobId': uuid.uuid4()
+                    }
+            'configuration': {
+                    'extract': {
+                            'sourceTable': {
+                                    'projectId': projectId,
+                                    'datasetId': datasetId,
+                                    'tableId': tableId,
+                                    },
+                            'destinationUris': [cloud_storage_path],
+                            }
+                    }
             }
-        }
-    }
     return service.jobs().insert(
         projectId=projectId,
-        body=job_data).execute()
+        body=job_data).execute(num_retries)
 # [END export_table]
 
 

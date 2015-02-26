@@ -13,11 +13,11 @@ def get_service():
 
 
 # [START poll_job]
-def poll_job(service, projectId, jobId, timeout=1, max_timeout=33):
+def poll_job(service, projectId, jobId, timeout=1, max_timeout=33, num_retries=5):
     job_get = service.jobs().get(
             projectId=projectId,
             jobId=jobId)
-    job_resource = job_get.execute()
+    job_resource = job_get.execute(num_retries)
 
     while not job_resource['status']['state'] == 'DONE':
         if timeout > max_timeout:
@@ -31,34 +31,13 @@ def poll_job(service, projectId, jobId, timeout=1, max_timeout=33):
 
         time.sleep(timeout)
         timeout *= 2
-        job_resource = job_get.execute()
+        job_resource = job_get.execute(num_retries)
 
     return job_resource
 # [END poll_job]
 
-
-# [START poll_query]
-def poll_query(service, projectId, jobId, timeout=30, max_tries=1):
-    query_get = service.jobs().getQueryResults(
-                    projectId=projectId,
-                    jobId=jobId,
-                    timeoutMs=timeout*1000)
-
-    tries = 0
-    while True:
-        try:
-            return query_get.execute()
-        except Timeout:
-            tries += 1
-            if tries >= max_tries:
-                raise
-            print('Waiting for query to complete, '
-                  '{} tries remaining'.format(max_tries - tries))
-# [END poll_query]
-
-
 # [START query_paging]
-def query_paging(service, query_response):
+def query_paging(service, query_response, num_retries=5):
     while 'rows' in query_response:
         yield query_response['rows']
         if 'pageToken' in query_response:
@@ -66,7 +45,7 @@ def query_paging(service, query_response):
             query_response = service.jobs().getQueryResults(
                 projectId=query_response['jobReference']['projectId'],
                 jobId=query_response['jobReference']['jobId'],
-                pageToken=page_token).execute()
+                pageToken=page_token).execute(num_retries)
         else:
             return
 # [END query_paging]
