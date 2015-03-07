@@ -1,8 +1,9 @@
 from __future__ import print_function  # For python 2/3 interoperability
 from samples.utils import get_service, query_paging, poll_job
 import uuid
-import sys
 import json
+
+
 # [START async_query]
 def async_query(service, project_id, query, batch=False, num_retries=5):
     # Generate a unique job_id so retries
@@ -26,11 +27,14 @@ def async_query(service, project_id, query, batch=False, num_retries=5):
 
 
 # [START run]
-def run(project_id, query_string, batch, num_retries, interval, out):
+def run(project_id, query_string, batch, num_retries, interval):
     service = get_service()
 
-    query_job = async_query(service, project_id, query_string, batch, num_retries)
-
+    query_job = async_query(service,
+                            project_id,
+                            query_string,
+                            batch,
+                            num_retries)
 
     poll_job(service,
              query_job['jobReference']['projectId'],
@@ -38,11 +42,11 @@ def run(project_id, query_string, batch, num_retries, interval, out):
              interval,
              num_retries)
 
-    response=service.jobs().getQueryResults(
+    response = service.jobs().getQueryResults(
             **query_job['jobReference']).execute(num_retries=num_retries)
 
     for page in query_paging(service, response, num_retries):
-        out.write(json.dumps(page))
+        yield json.dumps(page)
 # [END run]
 
 
@@ -56,11 +60,7 @@ def main():
             "Enter number of times to retry in case of 500 error: ")
     interval = raw_input(
             "Enter how often to poll your query for completion (seconds): ")
-    out_path = raw_input(
-            "Enter the path to write the results to (blank for stdout): ")
-    if out_path == "":
-        out = sys.stdout
-    else:
-        out = open(out_path, 'w')
-    run(project_id, query_string, batch, num_retries, interval, out)
+
+    for result in run(project_id, query_string, batch, num_retries, interval):
+        print(result)
 # [END main]

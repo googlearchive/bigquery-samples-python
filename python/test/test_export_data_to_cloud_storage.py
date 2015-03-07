@@ -1,6 +1,8 @@
 """Tests for export_table_to_gcs."""
 from test.base_test import BaseBigqueryTest
 from samples.export_data_to_cloud_storage import run
+import unittest
+
 
 class TestExportTableToGCS(BaseBigqueryTest):
 

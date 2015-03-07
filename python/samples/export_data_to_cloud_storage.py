@@ -4,7 +4,8 @@ import uuid
 
 # [START export_table]
 def export_table(service, cloud_storage_path,
-                 projectId, datasetId, tableId, num_retries=5):
+                 projectId, datasetId, tableId,
+                 num_retries=5):
     # Generate a unique job_id so retries
     # don't accidentally duplicate export
     job_data = {
@@ -28,8 +29,12 @@ def export_table(service, cloud_storage_path,
         body=job_data).execute(num_retries=num_retries)
 # [END export_table]
 
+
 # [START run]
-def run(cloud_storage_path, projectId, datasetId, tableId, num_retries, interval):
+def run(cloud_storage_path,
+        projectId, datasetId, tableId,
+        num_retries, interval):
+
     bigquery = get_service()
     resource = export_table(bigquery, cloud_storage_path,
                             projectId, datasetId, tableId, num_retries)
@@ -40,16 +45,22 @@ def run(cloud_storage_path, projectId, datasetId, tableId, num_retries, interval
              num_retries)
 # [END run]
 
+
 # [START main]
 def main():
     projectId = raw_input("Choose your project ID: ")
     datasetId = raw_input("Choose a dataset ID: ")
     tableId = raw_input("Choose a table name to copy: ")
-    cloud_storage_path = raw_input("Enter a Google Cloud Storage URI: ")
-    interval = raw_input("Enter how often you want to check your job for completion (in seconds): ")
-    num_retries = raw_input("Enter the number of retries in case of 500 error: ")
+    cloud_storage_path = raw_input(
+            "Enter a Google Cloud Storage URI: ")
+    interval = raw_input(
+            "Enter how often to poll your job (in seconds): ")
+    num_retries = raw_input(
+            "Enter the number of retries in case of 500 error: ")
 
-    run(cloud_storage_path, projectId, datasetId, tableId, num_retries, interval)
+    run(cloud_storage_path,
+        projectId, datasetId, tableId,
+        num_retries, interval)
 
     print 'Done exporting!'
 # [END main]

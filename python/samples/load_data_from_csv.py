@@ -67,5 +67,13 @@ def main():
             "Enter number of times to retry in case of 500 error: ")
     interval = raw_input(
             "Enter how often to poll your query for completion (seconds): ")
-    run(schema, data_file_path, projectId, datasetId, tableId, interval, num_retries)
+    run(schema,
+        data_file_path,
+        projectId,
+        datasetId,
+        tableId,
+        interval,
+        num_retries)
+
+    print("Job complete!")
 # [END main]

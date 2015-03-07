@@ -4,7 +4,7 @@ from samples.utils import get_service
 import ast
 import uuid
 import json
-import sys
+
 
 # [START stream_row_to_bigquery]
 def stream_row_to_bigquery(service,
@@ -20,27 +20,24 @@ def stream_row_to_bigquery(service,
             'rows': [{'json': row}]
             }
     return service.tabledata().insertAll(
-                    projectId=project_id,
-                    datasetId=dataset_id,
-                    tableId=table_id,
-                    body=insert_all_data).execute(num_retries=num_retries)
-# [END stream_row_to_bigquery]
+            projectId=project_id,
+            datasetId=dataset_id,
+            tableId=table_id,
+            body=insert_all_data).execute(num_retries=num_retries)
+    # [END stream_row_to_bigquery]
 
 
 # [START run]
-def run(project_id, dataset_id, table_id, rows, num_retries, out):
+def run(project_id, dataset_id, table_id, rows, num_retries):
     service = get_service()
     for row in rows:
         response = stream_row_to_bigquery(service,
-                                     project_id,
-                                     dataset_id,
-                                     table_id,
-                                     row,
-                                     num_retries)
-        out.write(json.dumps(response))
-        out.flush()
-
-
+                                          project_id,
+                                          dataset_id,
+                                          table_id,
+                                          row,
+                                          num_retries)
+        yield json.dumps(response)
 # [END run]
 
 
@@ -60,10 +57,8 @@ def main():
     table_id = raw_input("Choose a table ID : ")
     num_retries = int(raw_input(
             "Enter number of times to retry in case of 500 error: "))
-    out_path = raw_input(
-            "Enter the path to write the results to (blank for stdout): ")
 
-    with (sys.stdout if out_path=="" else open(out_path, 'w')) as out:
-        run(project_id, dataset_id, table_id, get_rows(), num_retries, out)
-
+    for result in run(project_id, dataset_id, table_id,
+                      get_rows(), num_retries):
+        print(result)
 # [END main]
