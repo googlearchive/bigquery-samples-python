@@ -9,17 +9,17 @@ def async_query(service, project_id, query, batch=False, num_retries=5):
     # Generate a unique job_id so retries
     # don't accidentally duplicate query
     job_data = {
-            'jobReference': {
-                    'projectId': project_id,
-                    'job_id': str(uuid.uuid4())
-                    },
-            'configuration': {
-                    'query': {
-                            'query': query,
-                            'priority': 'BATCH' if batch else 'INTERACTIVE',
-                            },
-                    }
-            }
+        'jobReference': {
+                'projectId': project_id,
+                'job_id': str(uuid.uuid4())
+                },
+        'configuration': {
+                'query': {
+                        'query': query,
+                        'priority': 'BATCH' if batch else 'INTERACTIVE',
+                        },
+                }
+        }
     return service.jobs().insert(
             projectId=project_id,
             body=job_data).execute(num_retries=num_retries)
