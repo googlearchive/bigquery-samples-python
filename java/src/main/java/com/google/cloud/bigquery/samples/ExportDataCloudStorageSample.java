@@ -49,9 +49,10 @@ public class ExportDataCloudStorageSample extends BigqueryUtils {
     Job extractJob = extractJob(
         bigquery,
         cloudStoragePath,
-        projectId,
-        datasetId,
-        tableId);
+        new TableReference()
+        .setProjectId(projectId)
+        .setDatasetId(datasetId)
+        .setTableId(tableId));
     
     Bigquery.Jobs.Get get_job = bigquery.jobs().get(
         extractJob.getJobReference().getProjectId(), 
@@ -69,18 +70,13 @@ public class ExportDataCloudStorageSample extends BigqueryUtils {
   public static Job extractJob(
       Bigquery bigquery,
       String cloudStoragePath, 
-      String projectId, 
-      String datasetId, 
-      String tableId) throws IOException{
+      TableReference table) throws IOException{
     
     JobConfigurationExtract extract = new JobConfigurationExtract()
-    .setSourceTable(
-        new TableReference().setProjectId(projectId)
-        .setDatasetId(datasetId)
-        .setTableId(tableId)
-        ).setDestinationUri(cloudStoragePath);
+    .setSourceTable(table)
+    .setDestinationUri(cloudStoragePath);
 
-    return bigquery.jobs().insert(projectId, 
+    return bigquery.jobs().insert(table.getProjectId(), 
         new Job().setConfiguration(new JobConfiguration().setExtract(extract)))
         .execute();
   }

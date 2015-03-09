@@ -64,11 +64,12 @@ public class LoadDataCSVSample extends BigqueryUtils {
     Job loadJob = loadJob(
         bigquery,
         cloudStoragePath,
-        projectId,
-        datasetId,
-        tableId,
+        new TableReference()
+        .setProjectId(projectId)
+        .setDatasetId(datasetId)
+        .setTableId(tableId),
         loadSchema(schemaSource));
-    
+
     Bigquery.Jobs.Get get_job = bigquery.jobs().get(
         loadJob.getJobReference().getProjectId(), 
         loadJob.getJobReference().getJobId());
@@ -84,21 +85,15 @@ public class LoadDataCSVSample extends BigqueryUtils {
   public static Job loadJob(
       Bigquery bigquery,
       String cloudStoragePath, 
-      String projectId, 
-      String datasetId, 
-      String tableId,
+      TableReference table,
       TableSchema schema) throws IOException{
     
     JobConfigurationLoad load = new JobConfigurationLoad()
-    .setDestinationTable(
-        new TableReference().setProjectId(projectId)
-        .setDatasetId(datasetId)
-        .setTableId(tableId)
-        )
-        .setSchema(schema)
-        .setSourceUris(Collections.singletonList(cloudStoragePath));
+    .setDestinationTable(table)
+    .setSchema(schema)
+    .setSourceUris(Collections.singletonList(cloudStoragePath));
 
-    return bigquery.jobs().insert(projectId, 
+    return bigquery.jobs().insert(table.getProjectId(), 
         new Job().setConfiguration(new JobConfiguration().setLoad(load)))
         .execute();
   }
