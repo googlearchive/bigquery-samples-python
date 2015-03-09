@@ -7,10 +7,14 @@ import com.google.api.services.bigquery.model.DatasetList;
 import com.google.api.services.bigquery.model.GetQueryResultsResponse;
 import com.google.api.services.bigquery.model.Job;
 import com.google.api.services.bigquery.model.TableCell;
+import com.google.api.services.bigquery.model.TableFieldSchema;
 import com.google.api.services.bigquery.model.TableRow;
+import com.google.api.services.bigquery.model.TableSchema;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -83,6 +87,19 @@ public class BigqueryUtils {
   }
   // [END query_paging]
   
+  // [START load_schema]
+  public static TableSchema loadSchema(Reader schemaSource){
+    TableSchema sourceSchema = new TableSchema();
+    
+    List<TableFieldSchema> fields = (new Gson()).<List<TableFieldSchema>>fromJson(
+        schemaSource,
+        (new ArrayList<TableFieldSchema>()).getClass());
+    
+    sourceSchema.setFields(fields);
+    
+    return sourceSchema;
+  }
+  // [END load_schema]
   
   // [START list_datasets]
   /**
