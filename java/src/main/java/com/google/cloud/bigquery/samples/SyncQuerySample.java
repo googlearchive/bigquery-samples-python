@@ -62,6 +62,7 @@ public class SyncQuerySample extends BigqueryUtils{
    
    return getPages(getRequest);
  }
+ // [END run]
  
 
 }
