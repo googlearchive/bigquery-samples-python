@@ -1,16 +1,18 @@
 package com.google.cloud.bigquery.samples.test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
+import com.google.api.services.bigquery.model.TableRow;
 import com.google.cloud.bigquery.samples.SyncQuerySample;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -18,13 +20,24 @@ import java.io.PrintStream;
  */
 public class SyncQuerySampleTest extends BigquerySampleTest {
 
+  /**
+   * @throws JsonSyntaxException
+   * @throws JsonIOException
+   * @throws FileNotFoundException
+   */
+  protected SyncQuerySampleTest() throws JsonSyntaxException, JsonIOException,
+      FileNotFoundException {
+    super();
+  }
+
   @Test
   public void testSyncQuery() throws IOException{
-    ByteArrayOutputStream boas = new ByteArrayOutputStream();
-    PrintStream out = new PrintStream(boas);
-    SyncQuerySample.run(PROJECT_ID, QUERY, 10000, 5, out);
-    out.flush();
-    assertThat(boas.size(), is(not(0)));
+    Iterator<List<TableRow>> queryPages = SyncQuerySample.run(
+        CONSTANTS.getProjectId(),
+        CONSTANTS.getQuery(),
+        10000);
+    
+    assertTrue(queryPages.hasNext());
   }
   
 }

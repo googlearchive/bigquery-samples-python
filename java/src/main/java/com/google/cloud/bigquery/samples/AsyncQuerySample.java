@@ -23,7 +23,7 @@ import com.google.api.services.bigquery.model.JobConfigurationQuery;
 import com.google.api.services.bigquery.model.TableRow;
 
 import java.io.IOException;
-import java.io.PrintStream;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -52,39 +52,36 @@ public class AsyncQuerySample extends BigqueryUtils{
     boolean batch = Boolean.valueOf(scanner.nextLine());
     System.out.println("Enter how often to check if your job is complete (milliseconds): ");
     long waitTime = scanner.nextLong();
-    System.out.println("Enter how many times to retry your query in case of a 500 response from server: ");
-    int retries = scanner.nextInt();
     scanner.close();
-    run(projectId, queryString, batch, waitTime, retries, System.out);
+    Iterator<List<TableRow>> pages = run(projectId, queryString, batch, waitTime);
+    while(pages.hasNext()){
+      printRows(pages.next(), System.out);
+    }
 
   }
   // [END main]
 
   // [START run]
-  public static void run(String projectId,
+  public static Iterator<List<TableRow>> run(String projectId,
       String queryString,
       boolean batch, 
-      long waitTime, 
-      int retries,
-      PrintStream out) 
+      long waitTime) 
       throws IOException, InterruptedException{
     
     Bigquery bigquery = BigqueryServiceFactory.getService();
 
-    Job query = asyncQuery(bigquery, projectId, queryString, batch, retries);
+    Job query = asyncQuery(bigquery, projectId, queryString, batch);
     Bigquery.Jobs.Get getRequest = bigquery.jobs().get(
         projectId, query.getJobReference().getJobId());
     
     //Poll every waitTime milliseconds, 
     //retrying at most retries times if there are errors
-    pollJob(getRequest, waitTime , retries);
+    pollJob(getRequest, waitTime);
 
     GetQueryResults resultsRequest = bigquery.jobs().getQueryResults(
         projectId, query.getJobReference().getJobId());
     
-    for(List<TableRow> page: new QueryPages(resultsRequest, retries)){
-      printRows(page, out);
-    }
+     return getPages(resultsRequest);
   }
   // [END run]
   
@@ -101,8 +98,7 @@ public class AsyncQuerySample extends BigqueryUtils{
   public static Job asyncQuery(Bigquery bigquery, 
       String projectId,
       String querySql,
-      boolean batch,
-      int retries) throws IOException {
+      boolean batch) throws IOException {
     
     JobConfigurationQuery query_config = new JobConfigurationQuery()
           .setQuery(querySql);
@@ -114,7 +110,7 @@ public class AsyncQuerySample extends BigqueryUtils{
     Job job = new Job().setConfiguration(
         new JobConfiguration().setQuery(query_config));
             
-    return execute(bigquery.jobs().insert(projectId, job), retries);
+    return bigquery.jobs().insert(projectId, job).execute();
   }
   // [END asyncQuery]
 

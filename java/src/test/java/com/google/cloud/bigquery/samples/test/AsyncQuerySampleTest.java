@@ -1,37 +1,45 @@
 package com.google.cloud.bigquery.samples.test;
 
+import com.google.api.services.bigquery.model.TableRow;
 import com.google.cloud.bigquery.samples.AsyncQuerySample;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 
 import org.junit.*;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
-import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.util.Iterator;
+import java.util.List;
 
 public class AsyncQuerySampleTest extends BigquerySampleTest{
 
+  /**
+   * @throws JsonSyntaxException
+   * @throws JsonIOException
+   * @throws FileNotFoundException
+   */
+  protected AsyncQuerySampleTest() throws JsonSyntaxException, JsonIOException,
+      FileNotFoundException {
+    super();
+    // TODO(elibixby): Auto-generated constructor stub
+  }
+
+
   @Test
   public void testInteractive() throws IOException, InterruptedException{
-    ByteArrayOutputStream boas = new ByteArrayOutputStream();
-    PrintStream out = new PrintStream(boas);
-    AsyncQuerySample.run(PROJECT_ID, QUERY, false, 5000, 5, out);
-    out.flush();
-    assertThat(boas.size(), is(not(0)));
+    Iterator<List<TableRow>> pages = AsyncQuerySample.run(CONSTANTS.getProjectId(), CONSTANTS.getQuery(), false, 5000);
+    assertTrue(pages.hasNext());
   }
   
   
   @Test
   @Ignore // Batches can take up to 3 hours to run, probably shouldn't use this
   public void testBatch() throws IOException, InterruptedException{
-    ByteArrayOutputStream boas = new ByteArrayOutputStream();
-    PrintStream out = new PrintStream(boas);
-    AsyncQuerySample.run(PROJECT_ID, QUERY, true, 5000, 5, out);
-    out.flush();
-    assertThat(boas.size(), is(not(0)));
+    Iterator<List<TableRow>> pages = AsyncQuerySample.run(CONSTANTS.getProjectId(), CONSTANTS.getQuery(), true, 5000);
+    assertTrue(pages.hasNext());
   }
   
   

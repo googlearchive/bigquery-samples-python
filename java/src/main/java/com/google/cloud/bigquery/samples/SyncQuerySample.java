@@ -7,7 +7,7 @@ import com.google.api.services.bigquery.model.QueryResponse;
 import com.google.api.services.bigquery.model.TableRow;
 
 import java.io.IOException;
-import java.io.PrintStream;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 /**
@@ -33,27 +33,24 @@ public class SyncQuerySample extends BigqueryUtils{
    System.out.println("Enter how long to wait for the query to complete (in milliseconds):\n " +
                       "(if longer than 10 seconds, use an asynchronous query)");
    long waitTime = scanner.nextLong();
-   System.out.println("Enter how many times to retry your query in case of a 500 response from server: ");
-   int retries = scanner.nextInt();
    scanner.close();
-   run(projectId, queryString, waitTime, retries, System.out);
-
+   Iterator<List<TableRow>> pages = run(projectId, queryString, waitTime);
+   while(pages.hasNext()){
+     printRows(pages.next(), System.out);
+   }
  }
  // [END main]
   
 
  // [START run]
- public static void run(String projectId, 
+ public static Iterator<List<TableRow>> run(String projectId, 
      String queryString, 
-     long waitTime, 
-     int retries,
-     PrintStream out) throws IOException{
+     long waitTime) throws IOException{
    Bigquery bigquery = BigqueryServiceFactory.getService();
    //Wait until query is done with 10 second timeout, at most 5 retries on error
-   QueryResponse query = execute(bigquery.jobs().query(
+   QueryResponse query = bigquery.jobs().query(
        projectId,
-       new QueryRequest().setTimeoutMs(waitTime).setQuery(queryString)), 
-       retries);
+       new QueryRequest().setTimeoutMs(waitTime).setQuery(queryString)).execute();
    
    //Make a request to get the results of the query 
    //(timeout is zero since job should be complete)
@@ -63,9 +60,7 @@ public class SyncQuerySample extends BigqueryUtils{
        query.getJobReference().getJobId());
    
    
-   for(List<TableRow> page: new QueryPages(getRequest, 5)){
-     printRows(page, out);
-   }
+   return getPages(getRequest);
  }
  
 
