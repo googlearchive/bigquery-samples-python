@@ -36,7 +36,11 @@ public class BigqueryUtils {
       throws IOException, InterruptedException{
     Job job = request.execute();
     while(!job.getStatus().getState().equals("DONE")) {
+      System.out.println("Job is " 
+    + job.getStatus().getState() 
+    + " waiting " + interval + " milliseconds...");
       Thread.sleep(interval);
+      job = request.execute();
     }
     return job;
   }
@@ -48,6 +52,7 @@ public class BigqueryUtils {
     class PageIterator implements Iterator<List<TableRow>>{
 
       GetQueryResults request;
+      boolean first = true;
 
       public PageIterator(GetQueryResults request_template){
         this.request = request_template;
@@ -55,11 +60,13 @@ public class BigqueryUtils {
 
 
       public boolean hasNext() {
-        return request.getPageToken() != null;
+        return first || request.getPageToken() != null;
       }
       public List<TableRow> next() {
+        first = false;
         try {
           GetQueryResultsResponse response =request.execute();
+          System.out.println("Next page is " + response.getPageToken());
           request = request.setPageToken(response.getPageToken());
           return response.getRows();
         } catch (IOException e) {

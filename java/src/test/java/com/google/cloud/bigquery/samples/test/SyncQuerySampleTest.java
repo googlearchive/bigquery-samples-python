@@ -25,19 +25,20 @@ public class SyncQuerySampleTest extends BigquerySampleTest {
    * @throws JsonIOException
    * @throws FileNotFoundException
    */
-  protected SyncQuerySampleTest() throws JsonSyntaxException, JsonIOException,
+  public SyncQuerySampleTest() throws JsonSyntaxException, JsonIOException,
       FileNotFoundException {
     super();
   }
 
   @Test
   public void testSyncQuery() throws IOException{
-    Iterator<List<TableRow>> queryPages = SyncQuerySample.run(
+    Iterator<List<TableRow>> pages = SyncQuerySample.run(
         CONSTANTS.getProjectId(),
         CONSTANTS.getQuery(),
         10000);
-    
-    assertTrue(queryPages.hasNext());
+    while(pages.hasNext()){
+      assertTrue(!pages.next().isEmpty());
+    }
   }
   
 }

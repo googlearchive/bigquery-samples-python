@@ -17,11 +17,11 @@ import java.util.Collection;
 public class BigqueryServiceFactory {
   
   private static Bigquery service = null;
-
+  private static Object service_lock = new Object();
   
   public static Bigquery getService() throws IOException{
     if(service==null){
-      synchronized(service){
+      synchronized(service_lock){
         if(service==null){
           service=createAuthorizedClient();
         }
@@ -39,7 +39,7 @@ public class BigqueryServiceFactory {
     if(credential.createScopedRequired()){
       credential = credential.createScoped(BIGQUERY_SCOPES);
     }
-    return new Bigquery.Builder(TRANSPORT, JSON_FACTORY, credential).build();
+    return new Bigquery.Builder(TRANSPORT, JSON_FACTORY, credential).setApplicationName("Bigquery Samples").build();
   }
   // [END get_service]
 

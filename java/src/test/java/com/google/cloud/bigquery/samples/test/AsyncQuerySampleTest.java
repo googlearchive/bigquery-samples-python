@@ -21,7 +21,7 @@ public class AsyncQuerySampleTest extends BigquerySampleTest{
    * @throws JsonIOException
    * @throws FileNotFoundException
    */
-  protected AsyncQuerySampleTest() throws JsonSyntaxException, JsonIOException,
+  public AsyncQuerySampleTest() throws JsonSyntaxException, JsonIOException,
       FileNotFoundException {
     super();
     // TODO(elibixby): Auto-generated constructor stub
@@ -31,7 +31,9 @@ public class AsyncQuerySampleTest extends BigquerySampleTest{
   @Test
   public void testInteractive() throws IOException, InterruptedException{
     Iterator<List<TableRow>> pages = AsyncQuerySample.run(CONSTANTS.getProjectId(), CONSTANTS.getQuery(), false, 5000);
-    assertTrue(pages.hasNext());
+    while(pages.hasNext()){
+      assertTrue(!pages.next().isEmpty());
+    }
   }
   
   
@@ -39,7 +41,9 @@ public class AsyncQuerySampleTest extends BigquerySampleTest{
   @Ignore // Batches can take up to 3 hours to run, probably shouldn't use this
   public void testBatch() throws IOException, InterruptedException{
     Iterator<List<TableRow>> pages = AsyncQuerySample.run(CONSTANTS.getProjectId(), CONSTANTS.getQuery(), true, 5000);
-    assertTrue(pages.hasNext());
+    while(pages.hasNext()){
+      assertTrue(!pages.next().isEmpty());
+    }
   }
   
   
