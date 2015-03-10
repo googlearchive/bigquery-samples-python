@@ -43,18 +43,18 @@ def run(project_id, dataset_id, table_id, rows, num_retries):
 
 # [START main]
 def get_rows():
-    line = raw_input("Stream a row (python dict) into your bigquery table: ")
+    line = raw_input("Enter a row (python dict) into the table: ")
     while line:
         yield ast.literal_eval(line)
         line = raw_input(
-                "Stream another row into your bigquery table \n" +
+                "Enter another row into the table \n" +
                 "[hit enter to stop]: ")
 
 
 def main():
-    project_id = raw_input("Choose your project ID: ")
-    dataset_id = raw_input("Choose a dataset ID: ")
-    table_id = raw_input("Choose a table ID : ")
+    project_id = raw_input("Enter the project ID: ")
+    dataset_id = raw_input("Enter a dataset ID: ")
+    table_id = raw_input("Enter a table ID : ")
     num_retries = int(raw_input(
             "Enter number of times to retry in case of 500 error: "))
 

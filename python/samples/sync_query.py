@@ -31,10 +31,10 @@ def run(project_id, query, timeout, num_retries):
 
 # [START main]
 def main():
-    project_id = raw_input("Choose your project ID: ")
-    query_string = raw_input("Enter your Bigquery SQL Query: ")
+    project_id = raw_input("Enter the project ID: ")
+    query_string = raw_input("Enter the Bigquery SQL Query: ")
     timeout = raw_input(
-            "Enter how long to wait for you query to complete in milliseconds"
+            "Enter how long to wait for the query to complete in milliseconds"
             "\n (if longer than 10 seconds, use an asynchronous query): ")
     num_retries = int(raw_input(
             "Enter how many times to retry in case of server error"))

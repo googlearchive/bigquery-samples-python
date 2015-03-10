@@ -48,13 +48,13 @@ def run(cloud_storage_path,
 
 # [START main]
 def main():
-    projectId = raw_input("Choose your project ID: ")
-    datasetId = raw_input("Choose a dataset ID: ")
-    tableId = raw_input("Choose a table name to copy: ")
+    projectId = raw_input("Enter the project ID: ")
+    datasetId = raw_input("Enter a dataset ID: ")
+    tableId = raw_input("Enter a table name to copy: ")
     cloud_storage_path = raw_input(
             "Enter a Google Cloud Storage URI: ")
     interval = raw_input(
-            "Enter how often to poll your job (in seconds): ")
+            "Enter how often to poll the job (in seconds): ")
     num_retries = raw_input(
             "Enter the number of retries in case of 500 error: ")
 

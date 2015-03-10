@@ -52,9 +52,9 @@ def run(project_id, query_string, batch, num_retries, interval):
 
 # [START main]
 def main():
-    project_id = raw_input("Choose your project ID: ")
-    query_string = raw_input("Enter your Bigquery SQL Query: ")
-    batch = raw_input("Run query as batch?: ") in ('True',
+    project_id = raw_input("Enter the project ID: ")
+    query_string = raw_input("Enter the Bigquery SQL Query: ")
+    batch = raw_input("Run query as batch (y/n)?: ") in ('True',
                                                    'true',
                                                    'y',
                                                    'Y',
@@ -65,7 +65,7 @@ def main():
     num_retries = raw_input(
             "Enter number of times to retry in case of 500 error: ")
     interval = raw_input(
-            "Enter how often to poll your query for completion (seconds): ")
+            "Enter how often to poll the query for completion (seconds): ")
 
     for result in run(project_id, query_string, batch, num_retries, interval):
         print(result)

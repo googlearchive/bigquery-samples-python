@@ -47,16 +47,16 @@ def make_post(http, schema, data, projectId, datasetId, tableId):
 def main():
     credentials = GoogleCredentials.get_application_default()
     http = credentials.authorize(httplib2.Http())
-    projectId = raw_input('Choose your project ID: ')
-    datasetId = raw_input('Choose a dataset ID: ')
-    tableId = raw_input('Choose a table name to load the data to: ')
+    projectId = raw_input('Enter the project ID: ')
+    datasetId = raw_input('Enter a dataset ID: ')
+    tableId = raw_input('Enter a table name to load the data to: ')
     schema_path = raw_input(
             'Enter the path to the schema file for the table: ')
 
     with open(schema_path, 'r') as schema_file:
         schema = schema_file.read()
 
-    data_path = raw_input('Enter the path to your data file: ')
+    data_path = raw_input('Enter the path to the data file: ')
 
     with open(data_path, 'r') as data_file:
         data = data_file.read()
