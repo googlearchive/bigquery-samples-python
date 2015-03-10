@@ -10,7 +10,10 @@ Sample code documenting usage of [Google Bigquery](https://cloud.google.com/bigq
 
 2. [Generate a private key (JSON format)](https://cloud.google.com/storage/docs/authentication#generating-a-private-key) for your account.
 
-3. Make an environment variable: `export GOOGLE_APPLICATION_CREDENTIALS=<path>/<to>/<your>/<private-key>`
+3. Make an environment variable: 
+   ```
+    export GOOGLE_APPLICATION_CREDENTIALS=<path>/<to>/<your>/<private-key>
+   ```
 
 
 ## Run
