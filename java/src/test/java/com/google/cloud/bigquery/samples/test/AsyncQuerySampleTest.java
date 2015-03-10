@@ -1,6 +1,6 @@
 package com.google.cloud.bigquery.samples.test;
 
-import com.google.api.services.bigquery.model.TableRow;
+import com.google.api.services.bigquery.model.GetQueryResultsResponse;
 import com.google.cloud.bigquery.samples.AsyncQuerySample;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
@@ -12,7 +12,6 @@ import static org.junit.Assert.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
 
 public class AsyncQuerySampleTest extends BigquerySampleTest{
 
@@ -30,9 +29,9 @@ public class AsyncQuerySampleTest extends BigquerySampleTest{
 
   @Test
   public void testInteractive() throws IOException, InterruptedException{
-    Iterator<List<TableRow>> pages = AsyncQuerySample.run(CONSTANTS.getProjectId(), CONSTANTS.getQuery(), false, 5000);
+    Iterator<GetQueryResultsResponse> pages = AsyncQuerySample.run(CONSTANTS.getProjectId(), CONSTANTS.getQuery(), false, 5000);
     while(pages.hasNext()){
-      assertTrue(!pages.next().isEmpty());
+      assertTrue(!pages.next().getRows().isEmpty());
     }
   }
   
@@ -40,9 +39,9 @@ public class AsyncQuerySampleTest extends BigquerySampleTest{
   @Test
   @Ignore // Batches can take up to 3 hours to run, probably shouldn't use this
   public void testBatch() throws IOException, InterruptedException{
-    Iterator<List<TableRow>> pages = AsyncQuerySample.run(CONSTANTS.getProjectId(), CONSTANTS.getQuery(), true, 5000);
+    Iterator<GetQueryResultsResponse> pages = AsyncQuerySample.run(CONSTANTS.getProjectId(), CONSTANTS.getQuery(), true, 5000);
     while(pages.hasNext()){
-      assertTrue(!pages.next().isEmpty());
+      assertTrue(!pages.next().getRows().isEmpty());
     }
   }
   

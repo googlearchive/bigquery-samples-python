@@ -17,14 +17,13 @@ package com.google.cloud.bigquery.samples;
 
 import com.google.api.services.bigquery.Bigquery;
 import com.google.api.services.bigquery.Bigquery.Jobs.GetQueryResults;
+import com.google.api.services.bigquery.model.GetQueryResultsResponse;
 import com.google.api.services.bigquery.model.Job;
 import com.google.api.services.bigquery.model.JobConfiguration;
 import com.google.api.services.bigquery.model.JobConfigurationQuery;
-import com.google.api.services.bigquery.model.TableRow;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Scanner;
 
 
@@ -53,16 +52,16 @@ public class AsyncQuerySample extends BigqueryUtils{
     System.out.println("Enter how often to check if your job is complete (milliseconds): ");
     long waitTime = scanner.nextLong();
     scanner.close();
-    Iterator<List<TableRow>> pages = run(projectId, queryString, batch, waitTime);
+    Iterator<GetQueryResultsResponse> pages = run(projectId, queryString, batch, waitTime);
     while(pages.hasNext()){
-      printRows(pages.next(), System.out);
+      printRows(pages.next().getRows(), System.out);
     }
 
   }
   // [END main]
 
   // [START run]
-  public static Iterator<List<TableRow>> run(String projectId,
+  public static Iterator<GetQueryResultsResponse> run(String projectId,
       String queryString,
       boolean batch, 
       long waitTime) 
