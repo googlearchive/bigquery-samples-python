@@ -29,7 +29,7 @@ public class LoadDataCSVSampleTest extends BigquerySampleTest {
   @Test
   public void testLoadData() throws IOException, InterruptedException{
     LoadDataCSVSample.run(
-        CONSTANTS.getGcsInputURI(), 
+        CONSTANTS.getCloudStorageInputURI(), 
         CONSTANTS.getProjectId(),
         CONSTANTS.getDatasetId(),
         CONSTANTS.getNewTableId(),

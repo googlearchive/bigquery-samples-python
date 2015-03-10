@@ -39,7 +39,7 @@ public class BigqueryServiceFactory {
     if(credential.createScopedRequired()){
       credential = credential.createScoped(BIGQUERY_SCOPES);
     }
-    return new Bigquery.Builder(TRANSPORT, JSON_FACTORY, credential).setApplicationName("Bigquery Samples").build();
+    return new Bigquery.Builder(TRANSPORT, JSON_FACTORY, credential).setApplicationName("BigQuery Samples").build();
   }
   // [END get_service]
 

@@ -26,7 +26,7 @@ public class ExportDataCloudStorageSampleTest extends BigquerySampleTest {
   
   @Test
   public void testExportData() throws IOException, InterruptedException{
-    ExportDataCloudStorageSample.run(CONSTANTS.getGcsOutputURI(), 
+    ExportDataCloudStorageSample.run(CONSTANTS.getCloudStorageOutputURI(), 
         CONSTANTS.getProjectId(),
         CONSTANTS.getDatasetId(),
         CONSTANTS.getCurrentTableId(),

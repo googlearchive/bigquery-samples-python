@@ -22,8 +22,8 @@ public class BigquerySampleTest extends BigqueryUtils{
     private String datasetId;
     private String currentTableId;
     private String newTableId;
-    private String gcsInputURI;
-    private String gcsOutputURI;
+    private String cloudStorageInputURI;
+    private String cloudStorageOutputURI;
     private String query;
     private Integer discoveryDocMaxAge;
     /**
@@ -51,18 +51,6 @@ public class BigquerySampleTest extends BigqueryUtils{
       return newTableId;
     }
     /**
-     * @return the gcsInputURI
-     */
-    public String getGcsInputURI() {
-      return gcsInputURI;
-    }
-    /**
-     * @return the gcsOutputURI
-     */
-    public String getGcsOutputURI() {
-      return gcsOutputURI;
-    }
-    /**
      * @return the query
      */
     public String getQuery() {
@@ -74,7 +62,18 @@ public class BigquerySampleTest extends BigqueryUtils{
     public Integer getDiscoveryDocMaxAge() {
       return discoveryDocMaxAge;
     }
-
+    /**
+     * @return the cloudStorageOutputURI
+     */
+    public String getCloudStorageOutputURI() {
+      return cloudStorageOutputURI;
+    }
+    /**
+     * @return the cloudStorageInputURI
+     */
+    public String getCloudStorageInputURI() {
+      return cloudStorageInputURI;
+    }
   }
 
 

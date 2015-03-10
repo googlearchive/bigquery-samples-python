@@ -34,7 +34,7 @@ public class StreamingSample extends BigqueryUtils {
     String tableId = scanner.nextLine();
     scanner.close();
     
-    System.out.println("Enter JSON to stream to Bigquery: \n"
+    System.out.println("Enter JSON to stream to BigQuery: \n"
         + "Press End-of-stream (CTRL-D) to stop");
     
     JsonReader fromCLI = new JsonReader(new InputStreamReader(System.in));
