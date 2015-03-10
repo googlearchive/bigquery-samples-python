@@ -20,10 +20,10 @@ Sample code documenting usage of [Google BigQuery](https://cloud.google.com/bigq
 
 ### Python
 
-From the repository root directory run
+From the `python/` directory run
 
 ```
-pip install -r python/requirements.txt
+pip install -r requirements.txt
 ```
 
 Then to run a sample, simply use the interpreter
