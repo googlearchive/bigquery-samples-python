@@ -7,7 +7,7 @@ import unittest
 class TestExportTableToGCS(BaseBigqueryTest):
 
     def test_export_table(self):
-        run(self.constants['gcsInputURI'],
+        run(self.constants['cloudStorageInputURI'],
             self.constants['projectId'],
             self.constants['datasetId'],
             self.constants['newTableId'],

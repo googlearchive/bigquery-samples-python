@@ -3,8 +3,8 @@
 	"datasetId": "test_dataset",
 	"currentTableId": "test_table",
 	"newTableId": "test_table2",
-	"gcsInputURI": "gs://bigquery-devrel-samples-bucket/data.csv",
-	"gcsOutputURI": "gs://bigquery-devrel-samples-bucket/output.csv",
+	"cloudStorageInputURI": "gs://bigquery-devrel-samples-bucket/data.csv",
+	"cloudStorageOutputURI": "gs://bigquery-devrel-samples-bucket/output.csv",
 	"query": "SELECT corpus FROM publicdata:samples.shakespeare GROUP BY corpus;",
 	"discoveryDocMaxAge": 86400
 }

@@ -19,7 +19,7 @@ class TestLoadDataFromCSV(BaseBigqueryTest):
 
     def test_load_table(self):
         run(self.schema,
-            self.constants['gcsInputURI'],
+            self.constants['cloudStorageInputURI'],
             self.constants['projectId'],
             self.constants['datasetId'],
             self.constants['newTableId'],
