@@ -60,5 +60,5 @@ accept your pull requests.
    (https://github.com/GoogleCloudPlatform/Template/wiki/style.html) for the
    recommended coding standards for this organization.
 1. Ensure that your code has an appropriate set of unit tests which all pass.
-1. Submit a request to fork your repo in GoogleCloudPlatform organizationt via
+1. Submit a request to fork your repo in GoogleCloudPlatform organization via
    your proposal issue.
