@@ -5,6 +5,5 @@
 	"newTableId": "test_table2",
 	"cloudStorageInputURI": "gs://bigquery-devrel-samples-bucket/data.csv",
 	"cloudStorageOutputURI": "gs://bigquery-devrel-samples-bucket/output.csv",
-	"query": "SELECT corpus FROM publicdata:samples.shakespeare GROUP BY corpus;",
-	"discoveryDocMaxAge": 86400
+	"query": "SELECT corpus FROM publicdata:samples.shakespeare GROUP BY corpus;"
 }

@@ -1,12 +1,10 @@
-from test import RESOURCE_PATH
 import os
 import json
 import httplib2
 import time
 
-with open(os.path.join(RESOURCE_PATH, 'constants.json')) as constants_file:
-    constants = json.load(constants_file)
-
+RESOURCE_PATH='..'
+MAX_AGE = 86400
 
 # [START get_discovery_doc]
 def get_discovery_doc(api, version):
@@ -14,7 +12,7 @@ def get_discovery_doc(api, version):
     path = os.path.join(RESOURCE_PATH, '{}.{}'.format(api, version))
     try:
         age = time.time() - os.path.getmtime(path)
-        if age > constants['discoveryDocMaxAge']:
+        if age > MAX_AGE:
             update_discovery_doc(api, version, path)
     except os.error:
         update_discovery_doc(api, version, path)

@@ -25,7 +25,6 @@ public class BigquerySampleTest extends BigqueryUtils{
     private String cloudStorageInputURI;
     private String cloudStorageOutputURI;
     private String query;
-    private Integer discoveryDocMaxAge;
     /**
      * @return the projectId
      */
@@ -55,12 +54,6 @@ public class BigquerySampleTest extends BigqueryUtils{
      */
     public String getQuery() {
       return query;
-    }
-    /**
-     * @return the discoveryDocMaxAge
-     */
-    public Integer getDiscoveryDocMaxAge() {
-      return discoveryDocMaxAge;
     }
     /**
      * @return the cloudStorageOutputURI
