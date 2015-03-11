@@ -1,6 +1,6 @@
 ## bigquery-samples
 
-Sample code documenting usage of [Google BigQuery](https://cloud.google.com/bigquery/) using the [Bigquery Client Libraries](https://cloud.google.com/bigquery/client-libraries)
+Sample code documenting usage of [Google BigQuery](https://cloud.google.com/bigquery/) using the [BigQuery Client Libraries](https://cloud.google.com/bigquery/client-libraries)
 
 [![Build Status](https://travis-ci.org/GoogleCloudPlatform/bigquery-samples-python.svg)](https://travis-ci.org/GoogleCloudPlatform/bigquery-samples-python)
 
@@ -10,7 +10,7 @@ Sample code documenting usage of [Google BigQuery](https://cloud.google.com/bigq
 
 2. [Generate a private key (JSON format)](https://cloud.google.com/storage/docs/authentication#generating-a-private-key) for your account.
 
-3. Make an environment variable: 
+3. Make an environment variable:
    ```
     export GOOGLE_APPLICATION_CREDENTIALS=<path>/<to>/<your>/<private-key>
    ```
