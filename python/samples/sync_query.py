@@ -1,5 +1,5 @@
 from __future__ import print_function  # For python 2/3 interoperability
-from samples.utils import get_service, query_paging
+from samples.utils import get_service, paging
 import json
 
 
@@ -24,8 +24,11 @@ def run(project_id, query, timeout, num_retries):
                           timeout,
                           num_retries)
 
-    for page in query_paging(service, response, num_retries):
-        yield json.dumps(page)
+    for page in paging(service,
+                       service.jobs().getQueryResults,
+                       num_retries=num_retries,
+                       **response['jobReference']):
+        yield json.dumps(page['rows'])
 # [END run]
 
 

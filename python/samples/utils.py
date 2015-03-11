@@ -73,15 +73,14 @@ def poll_job(service, projectId, jobId, interval=5, num_retries=5):
 # [END poll_job]
 
 
-# [START query_paging]
-def query_paging(service, query_response, num_retries=5):
-    while 'rows' in query_response and 'pageToken' in query_response:
-        yield query_response['rows']
-        page_token = query_response['pageToken']
-        query_response = service.jobs().getQueryResults(
-            projectId=query_response['jobReference']['projectId'],
-            jobId=query_response['jobReference']['jobId'],
-            pageToken=page_token).execute(num_retries=num_retries)
-    if 'rows' in query_response:
-        yield query_response['rows']
-# [END query_paging]
+# [START paging]
+def paging(service, request_func, num_retries=5, **kwargs):
+    has_next = True
+    while has_next:
+        response = request_func(**kwargs).execute(num_retries=num_retries)
+        if 'pageToken' in response:
+            kwargs['pageToken'] = response['pageToken']
+        else:
+            has_next = False
+        yield response
+# [END paging]

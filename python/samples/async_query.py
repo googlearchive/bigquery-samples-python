@@ -1,5 +1,5 @@
 from __future__ import print_function  # For python 2/3 interoperability
-from samples.utils import get_service, query_paging, poll_job
+from samples.utils import get_service, paging, poll_job
 import uuid
 import json
 
@@ -42,11 +42,13 @@ def run(project_id, query_string, batch, num_retries, interval):
              interval,
              num_retries)
 
-    response = service.jobs().getQueryResults(
-            **query_job['jobReference']).execute(num_retries=num_retries)
 
-    for page in query_paging(service, response, num_retries):
-        yield json.dumps(page)
+    for page in paging(service,
+                       service.jobs().getQueryResults,
+                       num_retries=num_retries,
+                       **query_job['jobReference']):
+
+        yield json.dumps(page['rows'])
 # [END run]
 
 
