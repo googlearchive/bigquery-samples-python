@@ -1,18 +1,9 @@
 
 # [START get_service]
 def get_service():
-    from oauth2client.client import GoogleCredentials
-    from googleapiclient.discovery import build_from_document
-    from discovery_doc import get_discovery_doc
-    import httplib2
-
-    credentials = GoogleCredentials.get_application_default()
-
-    return build_from_document(get_discovery_doc('bigquery', 'v2'),
-                               http=httplib2.Http(),
-                               credentials=credentials)
+    from discovery_doc import build_and_update
+    return build_and_update('bigquery','v2')
 # [END get_service]
-
 
 # [START poll_job]
 def poll_job(service, projectId, jobId, interval=5, num_retries=5):

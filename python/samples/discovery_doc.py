@@ -3,15 +3,19 @@ import json
 import httplib2
 import time
 
-RESOURCE_PATH='..'
+# [START build_and_update]
+
+RESOURCE_PATH='..' #look for discovery docs in the parent folder
 MAX_AGE = 86400 #update discovery docs older than a day
 
 # A module that takes care of caching and updating discovery docs
 # for google-api-python-clients (until such a feature is integrated)
 
 
-# [START get_discovery_doc]
-def get_discovery_doc(api, version):
+def build_and_update(api, version):
+    from oauth2client.client import GoogleCredentials
+    from googleapiclient.discovery import build_from_document
+
 
     path = os.path.join(RESOURCE_PATH, '{}.{}'.format(api, version))
     try:
@@ -22,8 +26,10 @@ def get_discovery_doc(api, version):
         _update_discovery_doc(api, version, path)
 
     with open(path, 'r') as discovery_doc:
-        return discovery_doc.read()
-
+        return build_from_document(discovery_doc.read(),
+                               http=httplib2.Http(),
+                               credentials=GoogleCredentials
+                                   .get_application_default())
 
 def _update_discovery_doc(api, version, path):
     from apiclient.discovery import DISCOVERY_URI
@@ -43,5 +49,4 @@ def _update_discovery_doc(api, version, path):
     except ValueError:
         raise InvalidJsonError(
                 'Bad JSON: %s from %s.' % (content, requested_url))
-# [END get_discovery_doc]
-
+# [END build_and_update]
