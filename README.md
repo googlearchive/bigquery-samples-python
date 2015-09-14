@@ -1,3 +1,10 @@
+![status: inactive](https://img.shields.io/badge/status-inactive-red.svg)
+
+This project is no longer actively developed or maintained.  
+
+For new work on this check out the [Java](https://github.com/GoogleCloudPlatform/java-docs-samples/tree/master/bigquery) or [Python](https://github.com/GoogleCloudPlatform/python-docs-samples/tree/master/bigquery) documentation samples repositories.
+
+
 ## bigquery-samples
 
 Sample code documenting usage of [Google BigQuery](https://cloud.google.com/bigquery/) using the [BigQuery Client Libraries](https://cloud.google.com/bigquery/client-libraries)
